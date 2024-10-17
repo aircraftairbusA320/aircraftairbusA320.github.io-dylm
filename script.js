@@ -5,17 +5,31 @@ const heartLoader = document.querySelector(".cssload-main");
 const yesBtn = document.querySelector(".js-yes-btn");
 const noBtn = document.querySelector(".js-no-btn");
 
-// /change the postion of no button
-noBtn.addEventListener("mouseover", () => {
-  const newX = Math.floor(Math.random() * questionContainer.offsetWidth);
-  const newY = Math.floor(Math.random() * questionContainer.offsetWidth);
+// Disable 'No' button temporarily to avoid double tap
+let noBtnDisabled = false;
 
-  noBtn.style.left = `${newX}px`;
-  noBtn.style.top = `${newY}px`;
+// Change the position of 'No' button when hovered
+noBtn.addEventListener("mouseover", () => {
+  if (!noBtnDisabled) {
+    const newX = Math.floor(Math.random() * questionContainer.offsetWidth);
+    const newY = Math.floor(Math.random() * questionContainer.offsetHeight);
+
+    noBtn.style.left = `${newX}px`;
+    noBtn.style.top = `${newY}px`;
+  }
 });
 
-// yes button functionality
+// Disable the 'No' button for a short time after a tap
+noBtn.addEventListener("click", () => {
+  if (!noBtnDisabled) {
+    noBtnDisabled = true;
+    setTimeout(() => {
+      noBtnDisabled = false; // Re-enable after 2 seconds or your preferred time
+    }, 2000);
+  }
+});
 
+// Yes button functionality
 yesBtn.addEventListener("click", () => {
   questionContainer.style.display = "none";
   heartLoader.style.display = "inherit";
