@@ -8,8 +8,8 @@ const noBtn = document.querySelector(".js-no-btn");
 // Disable 'No' button temporarily to avoid double tap
 let noBtnDisabled = false;
 
-// Change the position of 'No' button when hovered
-noBtn.addEventListener("mouseover", () => {
+// Change the position of 'No' button when hovered or touched
+const moveNoButton = () => {
   if (!noBtnDisabled) {
     const newX = Math.floor(Math.random() * questionContainer.offsetWidth);
     const newY = Math.floor(Math.random() * questionContainer.offsetHeight);
@@ -17,15 +17,22 @@ noBtn.addEventListener("mouseover", () => {
     noBtn.style.left = `${newX}px`;
     noBtn.style.top = `${newY}px`;
   }
-});
+};
 
-// Disable the 'No' button for a short time after a tap
-noBtn.addEventListener("click", () => {
+// Event listener for hovering on desktop
+noBtn.addEventListener("mouseover", moveNoButton);
+
+// Event listener for touch on mobile
+noBtn.addEventListener("touchstart", (event) => {
+  event.preventDefault(); // Prevent any unwanted default behavior on mobile
+  moveNoButton();
+
+  // Temporarily disable the "No" button to prevent double-tap
   if (!noBtnDisabled) {
     noBtnDisabled = true;
     setTimeout(() => {
-      noBtnDisabled = false; // Re-enable after 2 seconds or your preferred time
-    }, 2000);
+      noBtnDisabled = false;
+    }, 2000); // Adjust the timeout as needed
   }
 });
 
